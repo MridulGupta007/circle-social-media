@@ -26,7 +26,7 @@ function Header() {
       </ul>
 
       <button
-        className="hover:bg-white hover:text-black duration-500 ease-in-out py-3 w-4/5 self-center relative top-[55%] rounded-md"
+        className="hover:bg-white hover:text-black duration-500 ease-in-out py-3 px-5 fixed bottom-5 left-10 rounded-md"
         onClick={() => {setConnected(true)}}
       >
         Connect Wallet
