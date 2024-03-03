@@ -287,8 +287,8 @@ export default function Profile() {
 
   return (
     <div className="pt-3">
-      <div className=" w-full shadow-lg px-5 py-3 flex flex-col gap-y-4 rounded-xl">
-        <div className="border-r">
+      <div className=" w-full shadow-lg px-5 py-3 flex justify-between gap-y-4 rounded-xl">
+        <div className="border-r flex flex-col w-2/4">
           <div className="flex items-center gap-x-5">
             <img
               src={pfp}
@@ -310,7 +310,11 @@ export default function Profile() {
             </span>
           </div>
         </div>
-        <div></div>
+        <div className="flex flex-col w-2/4 gap-y-4">
+          <h1 className="text-[25px] text-center font-light">Account Stats</h1>
+          <span className="text-[17px] text-center">Claimable Amount: {amountToClaim}</span>
+          <button className="bg-black text-white self-center px-5 py-3 rounded-lg">Claim Amount</button>
+        </div>
       </div>
 
       {/* Render profile tweets */}
