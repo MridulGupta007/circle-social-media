@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import pfp from "../assets/bear.png";
 import { ethers } from "ethers";
+import AddTweets from "./AddTweets";
 
 const CONTRACT_ADDRESS = "0xa87479557C544648A39ce473666Cf38ae47DBfc0";
 const ABI = [
@@ -134,7 +135,7 @@ function Feed() {
   const [users, setUsers] = useState([]);
   
 
-  
+  // receiving list of users
   const getAllUsers = async () => {
     try {
       let { ethereum } = window;
@@ -146,22 +147,26 @@ function Feed() {
           ABI,
           signer
         );
-        //Send the account address of the person for whom you need the tweets
+        
         let userList = await connectedContract.getAllUsers();
-        console.log(userList)
+        console.log('logging', userList)
         setUsers(userList);
+
+        userList.map(elem => {
+          getTweets(elem)
+        })
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchTweets = () => {
-    users.forEach((elem) => {
+  // const fetchTweets = async () => {
+  //   users.forEach((elem) => {
       
-      console.log(elem)
-    });
-  };
+  //     getTweets(elem)
+  //   });
+  // };
 
   const getTweets = async (accountAddress) => {
     try {
@@ -177,7 +182,7 @@ function Feed() {
         //Send the account address of the person for whom you need the tweets
         let getTweets = await connectedContract.getTweets(accountAddress);
         console.log('tweets for account', getTweets)
-        setMyTweets((prev) => [...prev, getTweets]);
+        setMyTweets(getTweets);
       }
     } catch (error) {
       console.log(error);
@@ -186,11 +191,13 @@ function Feed() {
 
   useEffect(() => {
     getAllUsers();
-    fetchTweets();
-    
+    // fetchTweets();
+    // console.log('logging my tweets array', myTweets)
   }, []);
 
   return (
+    <>
+    <AddTweets />
     <div>
       <div className="flex flex-col mt-5">
         <span className="text-[25px] font-light underline underline-offset-4">
@@ -199,7 +206,7 @@ function Feed() {
         <div className="flex gap-x-10 flex-wrap">
           {myTweets.length > 0 ? (
             myTweets.map((elem, index) => {
-                console.log(myTweets.length)
+                
                 return(
                     <div className="flex py-10 justify-center gap-x-5" key={index}>
                     <img
@@ -224,6 +231,7 @@ function Feed() {
                         rows={5}
                         placeholder={elem}
                         name="tweets"
+                        disabled
                       ></textarea>
                     </div>
                   </div>
@@ -236,6 +244,7 @@ function Feed() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

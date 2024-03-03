@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Logo from "../assets/circle-logo.png";
+import { NavLink } from "react-router-dom";
 function Header() {
   const [connected, setConnected] = useState(false);
   return (
@@ -13,13 +14,17 @@ function Header() {
         <li className="py-3 px-2 hover:bg-[#0F0F0F] cursor-pointer duration-300 ease-in-out">
           Write a Joke ?
         </li>
+        <NavLink to='feed'>
         <li className="py-3 px-2 hover:bg-[#0F0F0F] cursor-pointer duration-300 ease-in-out">
           Feed
         </li>
+        </NavLink>
         {connected && (
+          <NavLink to='profile'>
           <li className="py-3 px-2 hover:bg-[#0F0F0F] cursor-pointer duration-300 ease-in-out">
             Your Profile
           </li>
+          </NavLink>
         )}
         {/* <li className='py-3 px-2 hover:bg-[#0F0F0F] cursor-pointer duration-300 ease-in-out'>Generate Referral</li>
             <li className='py-3 px-2 hover:bg-[#0F0F0F] cursor-pointer duration-300 ease-in-out'>Github Stats</li> */}

@@ -5,6 +5,7 @@ import pfp from "./assets/bear.png";
 import Profile from "./Components/Profile";
 import AddTweets from "./Components/AddTweets";
 import Feed from "./Components/Feed";
+import { Outlet } from "react-router-dom";
 function App() {
 
 
@@ -16,9 +17,7 @@ function App() {
       <Header />
       <div className="overflow-y-auto overflow-x-hidden overscroll-y-contain w-[85%] h-[100vh] px-10">
         
-        <AddTweets />
-        <Feed />
-        
+      <Outlet />
       </div>
     </div>
   );
