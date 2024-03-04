@@ -4,6 +4,8 @@ Introducing Connect, a groundbreaking blockchain project designed to revolutioni
 
 Video Link: https://www.loom.com/share/e200af584dcb404e812176b477981947?sid=d8d0973b-d971-4980-bacf-a8bc4e95154e
 
+Deployed Link: https://connect-self-nine.vercel.app/
+
 
 Key Features:
 
