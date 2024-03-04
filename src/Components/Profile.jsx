@@ -123,7 +123,6 @@ const ABI = [
 		type: "function",
 	},
 ];
-const fromAddress = "0x61B8A9baFda51De880254d509Aa6B3f12920df25";
 
 const tokenAddress = "0x9999f7Fea5938fD3b1E26A12c3f2fb024e194f97";
 const contractABI = [
@@ -204,7 +203,7 @@ export default function Profile() {
 				]);
 
 				const limit = await provider.estimateGas({
-					from: fromAddress,
+					from: "0x61B8A9baFda51De880254d509Aa6B3f12920df25",
 					to: contract.address,
 					value: ethers.utils.parseUnits("0.000", "ether"),
 					data: data,
@@ -239,6 +238,50 @@ export default function Profile() {
 			console.log(error);
 		}
 	};
+
+	async function postAd() {
+		try {
+			let { ethereum } = window;
+			if (ethereum) {
+				let provider = new ethers.providers.Web3Provider(ethereum);
+				const signer = provider.getSigner();
+
+				console.log("Transaction Begin");
+				const contract = new ethers.Contract(tokenAddress, contractABI, signer);
+
+				const amount = ethers.utils.parseUnits("2", 6);
+				console.log(amount);
+
+				const data = contract.interface.encodeFunctionData("transfer", [
+					"0x61B8A9baFda51De880254d509Aa6B3f12920df25",
+					amount,
+				]);
+
+				const limit = await provider.estimateGas({
+					from: connectedWallet,
+					to: contract.address,
+					value: ethers.utils.parseUnits("0.000", "ether"),
+					data: data,
+				});
+
+				console.log("The gas limit is " + limit);
+
+				const tx = await signer.sendTransaction({
+					to: contract.address,
+					value: ethers.utils.parseUnits("0.000", "ether"),
+					data: data,
+				});
+
+				console.log("Mining transaction...");
+
+				const receipt = await tx.wait();
+
+				console.log(receipt);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
 	const getTweets = async (address) => {
 		try {
@@ -365,6 +408,12 @@ export default function Profile() {
 						onClick={claimAmount}
 					>
 						Claim Amount
+					</button>
+					<button
+						className="bg-black text-white self-center px-5 py-3 rounded-lg"
+						onClick={postAd}
+					>
+						Post Ad
 					</button>
 				</div>
 			</div>
