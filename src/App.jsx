@@ -38,8 +38,9 @@ const wagmiConfig = createConfig({
 const WalletAddress = createContext();
 function App() {
 	const [walletAddress, setWalletAddress] = useState(null);
+	const [myAddress, setMyAddress] = useState(null)
 	return (
-		<WalletAddress.Provider value={{ walletAddress, setWalletAddress }}>
+		<WalletAddress.Provider value={{ walletAddress, setWalletAddress, myAddress, setMyAddress }}>
 			<WagmiConfig config={wagmiConfig}>
 				<RainbowKitProvider
 					chains={chains}

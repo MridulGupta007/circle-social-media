@@ -6,14 +6,14 @@ import Profile from './Components/Profile.jsx'
 import AddTweets from './Components/AddTweets.jsx'
 import Feed from './Components/Feed.jsx'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
-import Advertisement from './Components/Advertisement.jsx'
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />} >
       <Route path='/' element={<Feed />} />
       <Route path='profile' element={<Profile />} />
-      <Route path='advertise' element={<Advertisement />} />
+     
     </Route>
   )
 )

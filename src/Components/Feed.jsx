@@ -212,10 +212,11 @@ function Feed() {
 	useEffect(() => {
 		getAllUsers();
 	}, []);
+	
 
 	return (
-		<>
-			<AddTweets />
+		<>  {wallet.myAddress ? (<>
+		<AddTweets />
 			<div>
 				<div className="flex flex-col mt-5">
 					<span className="text-[25px] font-light underline underline-offset-4">
@@ -274,7 +275,13 @@ function Feed() {
 				<div>
 					{/* Adverts */}
 				</div>
+			</div></>) : (<>
+			
+			<div className="flex justify-center items-center h-[100vh]">
+				<span className="text-[25px]">Connect Wallet to start</span>
 			</div>
+			</>)}
+			
 		</>
 	);
 }
