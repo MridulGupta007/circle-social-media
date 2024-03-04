@@ -123,6 +123,35 @@ const ABI = [
 		type: "function",
 	},
 ];
+const fromAddress = "0x61B8A9baFda51De880254d509Aa6B3f12920df25";
+
+const tokenAddress = "0x9999f7Fea5938fD3b1E26A12c3f2fb024e194f97";
+const contractABI = [
+	{
+		inputs: [
+			{ internalType: "address", name: "to", type: "address" },
+			{ internalType: "uint256", name: "value", type: "uint256" },
+		],
+		name: "transfer",
+		outputs: [{ internalType: "bool", name: "", type: "bool" }],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [{ internalType: "address", name: "account", type: "address" }],
+		name: "balanceOf",
+		outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "decimals",
+		outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
+		stateMutability: "view",
+		type: "function",
+	},
+];
 import { ethers } from "ethers";
 import pfp from "../assets/bear.png";
 import { useState, useEffect } from "react";
@@ -155,40 +184,55 @@ export default function Profile() {
 		}
 	};
 
-	//   const getAllUsers = async () => {
-	//     try {
-	//       let { ethereum } = window;
-	//       if (ethereum) {
-	//         let provider = new ethers.providers.Web3Provider(ethereum);
-	//         const signer = provider.getSigner();
-	//         const connectedContract = new ethers.Contract(
-	//           CONTRACT_ADDRESS,
-	//           ABI,
-	//           signer
-	//         );
-	//         //Return all the users who have did at least 1 tweet
-	//         let getAllUsers = await connectedContract.getAllUsers();
-	//         console.log(getAllUsers);
-	//       }
-	//     } catch (error) {
-	//       console.log(error);
-	//     }
-	//   };
-
 	const claimAmount = async () => {
 		try {
 			let { ethereum } = window;
 			if (ethereum) {
 				let provider = new ethers.providers.Web3Provider(ethereum);
-				const signer = provider.getSigner();
+				const privateKey = process.env.REACT_APP_PRIVATE_KEY; // Store your wallet address's private key in env file and use it here
+				const signer = new ethers.Wallet(privateKey).connect(provider);
+				console.log("Transaction Begin");
+				const contract = new ethers.Contract(tokenAddress, contractABI, signer);
+
+				const amount = ethers.utils.parseUnits(amountToClaim, 6);
+				console.log(amount);
+
+				const data = contract.interface.encodeFunctionData("transfer", [
+					connectedWallet,
+					amount,
+				]);
+
+				const limit = await provider.estimateGas({
+					from: fromAddress,
+					to: contract.address,
+					value: ethers.utils.parseUnits("0.000", "ether"),
+					data: data,
+				});
+
+				console.log("The gas limit is " + limit);
+
+				const tx = await signer.sendTransaction({
+					to: contract.address,
+					value: ethers.utils.parseUnits("0.000", "ether"),
+					data: data,
+				});
+
+				console.log("Mining transaction...");
+
+				const receipt = await tx.wait();
+
+				console.log(receipt);
+				const signer1 = provider.getSigner();
+
 				const connectedContract = new ethers.Contract(
 					CONTRACT_ADDRESS,
 					ABI,
-					signer
+					signer1
 				);
 
 				let claimAmount = await connectedContract.claimAmount();
 				await claimAmount.wait();
+				setAmountToClaim(0);
 			}
 		} catch (error) {
 			console.log(error);
@@ -315,7 +359,10 @@ export default function Profile() {
 					<span className="text-[17px] text-center">
 						Claimable Amount: {amountToClaim}
 					</span>
-					<button className="bg-black text-white self-center px-5 py-3 rounded-lg">
+					<button
+						className="bg-black text-white self-center px-5 py-3 rounded-lg"
+						onClick={claimAmount}
+					>
 						Claim Amount
 					</button>
 				</div>
