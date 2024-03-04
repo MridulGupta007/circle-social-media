@@ -1,9 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import pfp from "../assets/bear.png";
 import { ethers } from "ethers";
 import AddTweets from "./AddTweets";
-
+import { NavLink } from "react-router-dom";
+import { WalletAddress } from "../App";
 const CONTRACT_ADDRESS = "0x6d964471cf04446FF3C90E2994187139F49101ac";
 const ABI = [
 	{
@@ -135,6 +136,7 @@ function Feed() {
 
 	const [connectedWallet, setConnectedWallet] = useState("");
 
+	const wallet = useContext(WalletAddress)
 	// receiving list of users
 	const getAllUsers = async () => {
 		try {
@@ -199,7 +201,7 @@ function Feed() {
 				const tempData = { tweets: getTweets, address: accountAddress };
 				setTweetsData((prevData) => [...prevData, tempData]);
 
-				console.log(data);
+				// console.log(data);
 				// setMyTweets([getTweets, accountAddress]);
 			}
 		} catch (error) {
@@ -234,11 +236,13 @@ function Feed() {
 										/>
 										<div className="flex flex-col justify-center gap-y-1">
 											<div className="flex justify-between">
+												<NavLink to='profile' onClick={() => wallet.setWalletAddress(elem.address)}>
 												<span>
 													{elem.address.slice(0, 5)}
 													....
 													{elem.address.slice(37, 42)}
 												</span>
+												</NavLink>
 												<button
 													className="bg-gradient-to-br from-[#7f32ef] via-[#581abb] to-[#df3e8b] self-end px-3 py-2 text-white rounded-md"
 													onClick={() => {
@@ -252,11 +256,11 @@ function Feed() {
 												className="border relative px-5 py-3 resize-none focus:outline-none outline-none"
 												cols={50}
 												rows={5}
-												placeholder={elem}
+												placeholder={elem.tweets}
 												name="tweets"
 												disabled
 											>
-												{elem.tweets}
+												
 											</textarea>
 										</div>
 									</div>
@@ -266,6 +270,9 @@ function Feed() {
 							<div>You have not tweeted anything !!</div>
 						)}
 					</div>
+				</div>
+				<div>
+					{/* Adverts */}
 				</div>
 			</div>
 		</>

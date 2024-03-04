@@ -175,12 +175,12 @@ export default function Profile() {
 					method: "eth_requestAccounts",
 				});
 				setConnectedWallet(accounts[0]);
-				console.log(connectedWallet);
+				console.log(wallet.walletAddress);
 
-				getTweets(accounts[0]);
-				getSubscribers(accounts[0]);
-				getSubscribedAccounts(accounts[0]);
-				getClaimAmount(accounts[0]);
+				getTweets(wallet.walletAddress);
+				getSubscribers(wallet.walletAddress);
+				getSubscribedAccounts(wallet.walletAddress);
+				getClaimAmount(wallet.walletAddress);
 			} else {
 				console.error("MetaMask not detected. Please install MetaMask.");
 			}
@@ -397,8 +397,8 @@ export default function Profile() {
 							className="aspect-square rounded-full w-24"
 						/>
 						<span className="text-[25px]">
-							{connectedWallet.slice(0, 5)}....
-							{connectedWallet.slice(37, 42)}
+							{wallet.walletAddress.slice(0, 5)}....
+							{wallet.walletAddress.slice(37, 42)}
 						</span>
 					</div>
 
@@ -447,9 +447,9 @@ export default function Profile() {
 								<div className="flex flex-col justify-center gap-y-1">
 									<div className="flex justify-between">
 										<span>
-											{connectedWallet.slice(0, 5)}
+											{wallet.walletAddress.slice(0, 5)}
 											....
-											{connectedWallet.slice(37, 42)}
+											{wallet.walletAddress.slice(37, 42)}
 										</span>
 									</div>
 									<textarea

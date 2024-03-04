@@ -8,7 +8,7 @@ function Header() {
   // const [connected, setConnected] = useState(false);
   const wallet = useContext(WalletAddress);
   // const [connectedWallet, setConnectedWallet] = useState(null);
-
+  const [myAddress, setMyAddress] = useState(null)
   const connectWallet = async () => {
     try {
       if (window.ethereum) {
@@ -16,6 +16,7 @@ function Header() {
           method: "eth_requestAccounts",
         });
         wallet.setWalletAddress(accounts[0]);
+        setMyAddress(accounts[0])
       } else {
         console.error("MetaMask not detected. Please install MetaMask.");
       }
@@ -26,7 +27,7 @@ function Header() {
 
   const disconnectWallet = () => {
     wallet.setWalletAddress(null);
-
+    setMyAddress(null)
     console.log("Disconnected from wallet");
   };
   return (
@@ -46,7 +47,7 @@ function Header() {
           </li>
         </NavLink>
         {wallet.walletAddress && (
-          <NavLink to="profile">
+          <NavLink to="profile" onClick={() => wallet.setWalletAddress(myAddress)}>
             <li className="py-3 px-2 hover:bg-[#0F0F0F] cursor-pointer duration-300 ease-in-out">
               Your Profile
             </li>
@@ -60,15 +61,15 @@ function Header() {
           </NavLink>
         )}
       </ul>
-      {wallet.walletAddress ? (
+      {myAddress ? (
         <button
           className="hover:bg-white hover:text-black duration-500 ease-in-out py-3 px-5 fixed bottom-5 left-10 rounded-md"
           onClick={() => disconnectWallet()}
         >
-          {wallet.walletAddress.slice(0, 5)} ....{" "}
-          {wallet.walletAddress.slice(
-            wallet.walletAddress.length - 5,
-            wallet.walletAddress.length
+          {myAddress.slice(0, 5)} ....{" "}
+          {myAddress.slice(
+            myAddress.length - 5,
+            myAddress.length
           )}
         </button>
       ) : (
