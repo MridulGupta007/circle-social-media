@@ -153,7 +153,8 @@ const contractABI = [
 ];
 import { ethers } from "ethers";
 import pfp from "../assets/bear.png";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { WalletAddress } from "../App";
 
 export default function Profile() {
 	const [myTweets, setMyTweets] = useState([]);
@@ -162,6 +163,10 @@ export default function Profile() {
 
 	const [amountToClaim, setAmountToClaim] = useState(0);
 	const [connectedWallet, setConnectedWallet] = useState("");
+
+	const [loading, setLoading] = useState(false)
+
+	const wallet = useContext(WalletAddress)
 
 	const connectWallet = async () => {
 		try {
@@ -186,6 +191,8 @@ export default function Profile() {
 
 	const claimAmount = async () => {
 		try {
+			// Loading Starts
+			setLoading(true)
 			let { ethereum } = window;
 			if (ethereum) {
 				let provider = new ethers.providers.Web3Provider(ethereum);
@@ -203,7 +210,7 @@ export default function Profile() {
 				]);
 
 				const limit = await provider.estimateGas({
-					from: "0x61B8A9baFda51De880254d509Aa6B3f12920df25",
+					from: "0xc707B5466Af7E156d97B3dF59FdbdC4C8F4744cC",
 					to: contract.address,
 					value: ethers.utils.parseUnits("0.000", "ether"),
 					data: data,
@@ -232,10 +239,16 @@ export default function Profile() {
 
 				let claimAmount = await connectedContract.claimAmount();
 				await claimAmount.wait();
+				
+				//Loader ends
+				setLoading(false)
+				
+				
 				setAmountToClaim(0);
 			}
 		} catch (error) {
 			console.log(error);
+			setLoading(false)
 		}
 	};
 
@@ -253,7 +266,7 @@ export default function Profile() {
 				console.log(amount);
 
 				const data = contract.interface.encodeFunctionData("transfer", [
-					"0x61B8A9baFda51De880254d509Aa6B3f12920df25",
+					"0xc707B5466Af7E156d97B3dF59FdbdC4C8F4744cC",
 					amount,
 				]);
 
@@ -372,7 +385,9 @@ export default function Profile() {
 	}, []);
 
 	return (
-		<div className="pt-3">
+		<>
+		{wallet.walletAddress ? (
+			<div className="pt-3">
 			<div className=" w-full shadow-lg px-5 py-3 flex justify-between gap-y-4 rounded-xl">
 				<div className="border-r flex flex-col w-2/4">
 					<div className="flex items-center gap-x-5">
@@ -455,5 +470,12 @@ export default function Profile() {
 				)}
 			</div>
 		</div>
+		) : (
+			<div className="flex justify-center items-center h-[100vh] text-[30px]">
+				Connect Wallet to start
+			</div>
+		)}
+		
+		</>
 	);
 }
