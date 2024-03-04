@@ -39,7 +39,7 @@ function Header() {
         <li className="py-3 px-2 hover:bg-[#0F0F0F] cursor-pointer duration-300 ease-in-out">
           Write a Joke ?
         </li>
-        <NavLink to="feed">
+        <NavLink to="/">
           <li className="py-3 px-2 hover:bg-[#0F0F0F] cursor-pointer duration-300 ease-in-out">
             Feed
           </li>
