@@ -155,6 +155,7 @@ const contractABI = [
 import { ethers } from "ethers";
 import pfp from "../assets/bear.png";
 import { useState, useEffect } from "react";
+
 export default function Profile() {
 	const [myTweets, setMyTweets] = useState([]);
 	const [subscribers, setSubscribers] = useState(0);
