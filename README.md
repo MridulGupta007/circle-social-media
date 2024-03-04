@@ -6,6 +6,9 @@ Video Link: https://www.loom.com/share/e200af584dcb404e812176b477981947?sid=d8d0
 
 Deployed Link: https://connect-self-nine.vercel.app/
 
+Connect utilizes the Recommended developer tools for Cirlce, like USDC, Smart Contract Platform.
+
+
 
 Key Features:
 
@@ -33,4 +36,3 @@ Key Features:
 8. User-Friendly Interface:
    The platform boasts an intuitive and user-friendly interface, ensuring that both creators and subscribers can navigate the platform effortlessly. The seamless integration of Circle Blockchain SDKs enhances the overall user experience, making it accessible to a broad audience.
 
-Connect utilizes the Recommended developer tools for Cirlce, like USDC, Smart Contract Platform.
