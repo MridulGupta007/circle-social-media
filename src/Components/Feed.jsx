@@ -133,7 +133,6 @@ const ABI = [
 function Feed() {
   const [myTweets, setMyTweets] = useState([]);
   const [users, setUsers] = useState([]);
-  
 
   // receiving list of users
   const getAllUsers = async () => {
@@ -147,26 +146,19 @@ function Feed() {
           ABI,
           signer
         );
-        
+
         let userList = await connectedContract.getAllUsers();
-        console.log('logging', userList)
+        console.log("logging", userList);
         setUsers(userList);
 
-        userList.map(elem => {
-          getTweets(elem)
-        })
+        userList.map((elem) => {
+          getTweets(elem);
+        });
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  // const fetchTweets = async () => {
-  //   users.forEach((elem) => {
-      
-  //     getTweets(elem)
-  //   });
-  // };
 
   const getTweets = async (accountAddress) => {
     try {
@@ -181,7 +173,7 @@ function Feed() {
         );
         //Send the account address of the person for whom you need the tweets
         let getTweets = await connectedContract.getTweets(accountAddress);
-        console.log('tweets for account', getTweets)
+        console.log("tweets for account", getTweets);
         setMyTweets(getTweets);
       }
     } catch (error) {
@@ -191,24 +183,24 @@ function Feed() {
 
   useEffect(() => {
     getAllUsers();
-    // fetchTweets();
-    // console.log('logging my tweets array', myTweets)
   }, []);
 
   return (
     <>
-    <AddTweets />
-    <div>
-      <div className="flex flex-col mt-5">
-        <span className="text-[25px] font-light underline underline-offset-4">
-          Tweets
-        </span>
-        <div className="flex gap-x-10 flex-wrap">
-          {myTweets.length > 0 ? (
-            myTweets.map((elem, index) => {
-                
-                return(
-                    <div className="flex py-10 justify-center gap-x-5" key={index}>
+      <AddTweets />
+      <div>
+        <div className="flex flex-col mt-5">
+          <span className="text-[25px] font-light underline underline-offset-4">
+            Tweets
+          </span>
+          <div className="flex gap-x-10 flex-wrap">
+            {myTweets.length > 0 ? (
+              myTweets.map((elem, index) => {
+                return (
+                  <div
+                    className="flex py-10 justify-center gap-x-5"
+                    key={index}
+                  >
                     <img
                       src={pfp}
                       alt="profile-pic"
@@ -217,9 +209,15 @@ function Feed() {
                     <div className="flex flex-col justify-center gap-y-1">
                       <div className="flex justify-between">
                         <span>
-                          {"0xc707B5466Af7E156d97B3dF59FdbdC4C8F4744cC".slice(0, 5)}
+                          {"0xc707B5466Af7E156d97B3dF59FdbdC4C8F4744cC".slice(
+                            0,
+                            5
+                          )}
                           ....
-                          {"0xc707B5466Af7E156d97B3dF59FdbdC4C8F4744cC".slice(37, 42)}
+                          {"0xc707B5466Af7E156d97B3dF59FdbdC4C8F4744cC".slice(
+                            37,
+                            42
+                          )}
                         </span>
                         <button className="bg-gradient-to-br from-[#7f32ef] via-[#581abb] to-[#df3e8b] self-end px-3 py-2 text-white rounded-md">
                           Subscribe
@@ -235,15 +233,14 @@ function Feed() {
                       ></textarea>
                     </div>
                   </div>
-                )
-            })
-
-          ) : (
-            <div>You have not tweeted anything !!</div>
-          )}
+                );
+              })
+            ) : (
+              <div>You have not tweeted anything !!</div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
