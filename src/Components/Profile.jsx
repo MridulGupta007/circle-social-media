@@ -196,7 +196,7 @@ export default function Profile() {
       let { ethereum } = window;
       if (ethereum) {
         let provider = new ethers.providers.Web3Provider(ethereum);
-        const privateKey = "42e60701de70d38719553dbf89a6c22f03dbf94da656abd42bcec85c9d7f5764"; // Store your wallet address's private key in env file and use it here
+        const privateKey = process.env.REACT_APP_PRIVATE_KEY; // Store your wallet address's private key in env file and use it here
         const signer = new ethers.Wallet(privateKey).connect(provider);
         console.log("Transaction Begin");
         const contract = new ethers.Contract(tokenAddress, contractABI, signer);
